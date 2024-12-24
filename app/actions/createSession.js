@@ -2,24 +2,29 @@
 import { createAdminClient } from '@/config/appwrite';
 import { cookies } from 'next/headers';
 
-async function createSession(previousState, formData) {
-  const email = formData.get('email');
-  const password = formData.get('password');
-
-  if (!email || !password) {
-    return {
-      error: 'Please fill out all fields',
-    };
-  }
-
-  // Get account instance
-  const { account } = await createAdminClient();
-
+async function createSession(formData) {
   try {
-    //  Generate session
+    // Safely extract form data
+    const email = formData.get('email')?.trim() || '';
+    const password = formData.get('password') || '';
+
+    console.log('Received formData:', {
+      email: formData.get('email'),
+      password: formData.get('password'),
+    });
+    
+    // Validate input
+    if (!email || !password) {
+      return { error: 'Please fill out all fields' };
+    }
+
+    // Create Appwrite account client
+    const { account } = await createAdminClient();
+
+    // Attempt to create a session
     const session = await account.createEmailPasswordSession(email, password);
 
-    // Create cookie
+    // Set secure cookie for session
     cookies().set('appwrite-session', session.secret, {
       httpOnly: true,
       secure: true,
@@ -28,14 +33,10 @@ async function createSession(previousState, formData) {
       path: '/',
     });
 
-    return {
-      success: true,
-    };
+    return { success: true };
   } catch (error) {
-    console.log('Authentication Error: ', error);
-    return {
-      error: 'Invalid Credentials',
-    };
+    console.error('Authentication Error:', error.message || error);
+    return { error: 'Invalid Credentials' };
   }
 }
 
