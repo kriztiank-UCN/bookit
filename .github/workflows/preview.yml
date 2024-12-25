@@ -21,7 +21,7 @@ jobs:
           npm run lint
           npm run test
 
-        # Debug step to print Org and Project IDs (Optional)
+      # Debug step to print Org and Project IDs (Optional)
       - name: Check Vercel Org and Project IDs
         run: |
           echo "Vercel Org ID: $VERCEL_ORG_ID"
@@ -30,7 +30,8 @@ jobs:
       - name: Deploy to Vercel using CLI
         run: |
           npm i -g vercel
-          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes --prod
+          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID --yes --prod
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
