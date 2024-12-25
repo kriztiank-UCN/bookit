@@ -16,7 +16,7 @@ const BookingForm = ({ room} ) => {
       toast.success('Room has been booked!');
       router.push('/bookings');
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className='mt-6'>
