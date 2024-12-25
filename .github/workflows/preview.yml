@@ -1,4 +1,4 @@
-name: Deploy to Vercel on PR
+name: Deploy to Vercel (Preview)
 
 on:
   pull_request:
@@ -9,38 +9,31 @@ jobs:
   build_and_preview:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Install Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Install dependencies
       - name: Install Dependencies
         run: npm ci
 
-      # Run linting
       - name: Run Lint
         run: npm run lint
 
-      # Run tests
       - name: Run Tests
         run: npm run test
 
-      # Build the project
       - name: Build Project
         run: npm run build
 
-      # Deploy to Vercel
       - name: Deploy to Vercel
-        run: |
-          npm i -g vercel
-          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        uses: amondnet/vercel-action@v25.2.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          alias-domains: preview-${{ github.run_id }}.vercel.app

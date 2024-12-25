@@ -1,4 +1,4 @@
-name: Deploy to Vercel on Merge
+name: Deploy to Vercel (Production)
 
 on:
   push:
@@ -9,28 +9,24 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Install Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Install dependencies and build the project
-      - name: Install Dependencies and Build
-        run: |
-          npm ci
-          npm run build
+      - name: Install Dependencies
+        run: npm ci
 
-      # Deploy to Vercel
+      - name: Build Project
+        run: npm run build
+
       - name: Deploy to Vercel
-        run: |
-          npm i -g vercel
-          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes --prod
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        uses: amondnet/vercel-action@v25.2.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
