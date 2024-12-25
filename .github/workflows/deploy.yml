@@ -3,7 +3,7 @@ name: Deploy to Vercel on Merge
 on:
   push:
     branches:
-      - main
+      - main # Change to 'main' if your branch is named 'main'
 
 permissions:
   contents: read
@@ -24,8 +24,7 @@ jobs:
       - name: Deploy to Vercel using CLI
         run: |
           npm i -g vercel
-          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID --yes --prod
+          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes --prod
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
