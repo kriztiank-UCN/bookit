@@ -27,6 +27,10 @@ jobs:
           echo "Vercel Org ID: ${{ secrets.VERCEL_ORG_ID }}"
           echo "Vercel Project ID: ${{ secrets.VERCEL_PROJECT_ID }}"
 
+      - name: Test if secret is passed
+        run: |
+          echo "VERCEL_TOKEN is set: ${{ secrets.VERCEL_TOKEN != '' }}"
+
       - name: Deploy to Vercel using CLI
         run: |
           npm i -g vercel
