@@ -45,7 +45,7 @@ describe("form-testing", () => {
     // screen.debug(); // Optional: Outputs the rendered DOM structure for debugging
     // logRoles(container); // Optional: Outputs the roles of all elements in the container
     const { emailInput, passwordInput } = getFormElements();
-    expect(emailInput).toHaveValue("lala");
+    expect(emailInput).toHaveValue("");
     expect(passwordInput).toHaveValue("");
   });
   // test 2
