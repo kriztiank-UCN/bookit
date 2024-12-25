@@ -3,39 +3,33 @@ name: Deploy to Vercel on Merge
 on:
   push:
     branches:
-      - main # Change to 'main' if your branch is named 'main'
-
-permissions:
-  contents: read
-  deployments: write
+      - main
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      # Checkout the repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install dependencies and build
+      # Install Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies and build the project
+      - name: Install Dependencies and Build
         run: |
           npm ci
           npm run build
 
-      # Debug step to print Org and Project IDs (Optional)
-      - name: Check Vercel Org and Project IDs
-        run: |
-          echo "Vercel Org ID: ${{ secrets.VERCEL_ORG_ID }}"
-          echo "Vercel Project ID: ${{ secrets.VERCEL_PROJECT_ID }}"
-
-      - name: Test if secret is passed
-        run: |
-          echo "VERCEL_TOKEN is set: ${{ secrets.VERCEL_TOKEN != '' }}"
-
-      - name: Deploy to Vercel using CLI
+      # Deploy to Vercel
+      - name: Deploy to Vercel
         run: |
           npm i -g vercel
-          vercel --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project=${{ secrets.VERCEL_PROJECT_ID }} --yes --prod
+          vercel --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes --prod
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
