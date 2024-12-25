@@ -19,13 +19,21 @@ jobs:
         with:
           node-version: 18
 
-      # Install dependencies and build the project
-      - name: Install Dependencies and Build
-        run: |
-          npm ci
-          npm run build
-          npm run lint
-          npm run test
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Run linting
+      - name: Run Lint
+        run: npm run lint
+
+      # Run tests
+      - name: Run Tests
+        run: npm run test
+
+      # Build the project
+      - name: Build Project
+        run: npm run build
 
       # Deploy to Vercel
       - name: Deploy to Vercel
@@ -35,3 +43,4 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
