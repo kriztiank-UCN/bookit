@@ -21,6 +21,12 @@ jobs:
           npm ci
           npm run build
 
+        # Debug step to print Org and Project IDs (Optional)
+      - name: Check Vercel Org and Project IDs
+        run: |
+          echo "Vercel Org ID: $VERCEL_ORG_ID"
+          echo "Vercel Project ID: $VERCEL_PROJECT_ID"
+
       - name: Deploy to Vercel using CLI
         run: |
           npm i -g vercel
