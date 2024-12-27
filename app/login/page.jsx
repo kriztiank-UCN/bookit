@@ -67,7 +67,7 @@ const LoginPage = () => {
     if (isAuthenticated) {
       router.push("/");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated]);
 
   return (
     <div className='flex items-center justify-center bg-red-500'>
