@@ -70,7 +70,7 @@ const LoginPage = () => {
   }, [isAuthenticated, router]);
 
   return (
-    <div className='flex items-center justify-center'>
+    <div className='flex items-center justify-center bg-red-500'>
       <div className='bg-white shadow-lg rounded-lg p-6 w-full max-w-sm mt-20'>
         <form onSubmit={handleSubmit}>
           <h2 className='text-2xl font-bold text-center text-gray-800 mb-6'>Login</h2>
