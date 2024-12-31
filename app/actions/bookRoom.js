@@ -62,10 +62,15 @@ export const bookRoom = async (_, formData) => {
       bookingData
     );
 
-    // TODO Use Send SMS notification
+    // USE SEND SMS NOTIFICATION
     const smsMessage = `Greetings from Bookit. Your booking has been confirmed. Check-in: ${checkInDateTime}, Check-out: ${checkOutDateTime}`;
 
     await sendSMSNotification(user.id, smsMessage);
+
+    // USE SEND EMAIL NOTIFICATION
+    const emailMessage = `Greetings from Bookit. Your booking has been confirmed. Check-in: ${checkInDateTime}, Check-out: ${checkOutDateTime}`;
+
+    await sendEmailNotification(user.id, emailMessage);
 
     // Revalidate cache
     revalidatePath("/bookings", "layout");
@@ -81,7 +86,7 @@ export const bookRoom = async (_, formData) => {
   }
 };
 
-//  SEND SMS NOTIFICATION
+// SEND SMS NOTIFICATION
 export const sendSMSNotification = async (userId, content) => {
   // Get messaging instance
   const { messaging } = await createAdminClient();
@@ -96,5 +101,24 @@ export const sendSMSNotification = async (userId, content) => {
     return message;
   } catch (error) {
     console.error("An error occurred while sending sms:", error);
+  }
+};
+
+// SEND EMAIL NOTIFICATION
+export const sendEmailNotification = async (userId, content) => {
+  // Get messaging instance
+  const { messaging } = await createAdminClient();
+  try {
+    // https://appwrite.io/docs/references/1.5.x/server-nodejs/messaging#createEmail
+    const message = await messaging.createEmail(
+      ID.unique(), // messageId
+      "Notification", // subject
+      content, // content
+      [], // topics (optional)
+      [userId] // Recipients
+    );
+    return message;
+  } catch (error) {
+    console.error("An error occurred while sending email:", error);
   }
 };
