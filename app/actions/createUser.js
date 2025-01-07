@@ -2,7 +2,7 @@
 import { createAdminClient } from '@/config/appwrite';
 import { ID } from 'node-appwrite';
 
-async function createUser(previousState, formData) {
+async function createUser(_, formData) {
   const name = formData.get('name');
   const email = formData.get('email');
   const password = formData.get('password');
@@ -14,9 +14,9 @@ async function createUser(previousState, formData) {
     };
   }
 
-  if (password.length < 8) {
+  if (password.length < 5) {
     return {
-      error: 'Password must be at least 8 characters long',
+      error: 'Password must be at least 5 characters long',
     };
   }
 

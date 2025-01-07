@@ -33,10 +33,14 @@ const LoginPage = () => {
 
     // Validation logic
     if (!validator.isEmail(formData.email)) {
-      return setError("Invalid email");
+      setError("Invalid email");
+      setLoading(false);
+      return;
     }
     if (!validator.isLength(formData.password, { min: 5 })) {
-      return setError("Password must be at least 5 characters");
+      setError("Password must be at least 5 characters");
+      setLoading(false);
+      return;
     }
 
     try {
@@ -116,20 +120,13 @@ const LoginPage = () => {
             <button
               type='button'
               onClick={handleSubmit}
-              className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'
-            >
-              Submit
-            </button>
-
-            {/* <button
-              type='submit'
               className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={loading}
             >
-              {loading ? "Logging in..." : "Login"}
-            </button> */}
+              {loading ? "logging in..." : "Submit"}
+            </button>
 
             <p>
               No account?{" "}
